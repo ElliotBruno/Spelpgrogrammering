@@ -5,17 +5,30 @@ using UnityEngine;
 public class Playercombat : MonoBehaviour
 {
    
+    public Animator animator;
+    private KeyCode meleeAttackKey = KeyCode.T;
+    private KeyCode heavyAttackKey = KeyCode.R;
 
-    // Update is called once per frame
+
     void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) ;
+    { 
+        if (Input.GetKeyDown(meleeAttackKey))
         {
             Attack();
         }
+        if (Input.GetKeyDown(heavyAttackKey))
+        {
+            heavyattack();
+        }
+
     }
     void Attack()
     {
-        
+        animator.SetTrigger("Attack");
+        Debug.Log("Hey");
+    }
+    void heavyattack()
+    {
+        animator.SetTrigger("heavyattack");
     }
 }
