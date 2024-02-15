@@ -174,6 +174,7 @@ public class Playermovement : MonoBehaviour
     {
         jumpSoundEffect.Play();
         rb.velocity = new Vector2(rb.velocity.x, JumpForce);
+        //rb.AddForce(new Vector2(0, 100), JumpForce);
     }
 
     private void DoubleJump()
