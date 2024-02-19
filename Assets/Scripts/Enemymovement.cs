@@ -18,10 +18,10 @@ public class Enemymovement : MonoBehaviour
 
 
     private int currentWaypointIndex = 0;
-    private float MaxHP = 10;
-    private float HP = 10;
-    private int Edamage = 10;
-
+    public int MaxHP = 100;
+    int HP = 100;
+/*    private int damage = 10;
+*/
 
     private int enemycount = 5;
     private int points = 0;
@@ -35,7 +35,7 @@ public class Enemymovement : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         sprite.flipX = true;
-        MaxHP = HP;
+        HP = MaxHP;
 
     }
 
@@ -60,40 +60,58 @@ public class Enemymovement : MonoBehaviour
 
         }
 
-        void Damage(float damage)
-        {
-            Debug.Log("tar skada :)");
-            HP -= damage;
-            if (HP <= 0)
-            {
-                Destroy(sprite.gameObject);
-                points += 1;
 
-                Enemycount.text = "Enemies Remaining: " + points;
-
-                enemycount++;
-            }
+     
 
 
-
-        }
+   
 
         transform.position = Vector2.MoveTowards(transform.position, waypointTransform.position, Time.deltaTime * speed);
 
 
-      /*   void OnCollisionEnter2D(Collision2D collision) {
+    }
+    public void TakeDamage(int damage)
+    {
+        HP -= damage;
+        if (HP <= 0)
+        {
+            Die();
+        }
+    }
 
-            if ((collision.gameObject.CompareTag("Player"))
-            {
-                Debug.Log(collision.gameObject.name);
-                Damage(float damage);
-
-            }
-
-        }*/
-
-
-
-
+    void Die()
+    {
+        Debug.Log("Died");
     }
 }
+
+/*   void OnCollisionEnter2D(Collision2D collision) {
+
+      if ((collision.gameObject.CompareTag("Player"))
+      {
+          Debug.Log(collision.gameObject.name);
+          Damage(float damage);
+
+      }
+
+  }*/
+
+/*  void Damage(float damage)
+     {
+         Debug.Log("tar skada :)");
+         HP -= damage;
+         if (HP <= 0)
+         {
+             Destroy(sprite.gameObject);
+             points += 1;
+
+             Enemycount.text = "Enemies Remaining: " + points;
+
+             enemycount++;
+         }
+
+
+
+     }*/
+
+
