@@ -8,6 +8,7 @@ using UnityEngine;
 public class Enemymovement : MonoBehaviour
 {
     private float dirX;
+    public Animator animator;
     private SpriteRenderer sprite;
     private Animator anim;
 
@@ -73,6 +74,7 @@ public class Enemymovement : MonoBehaviour
     public void TakeDamage(int damage)
     {
         HP -= damage;
+        animator.SetTrigger("Hit");
         if (HP <= 0)
         {
             Die();
@@ -81,7 +83,11 @@ public class Enemymovement : MonoBehaviour
 
     void Die()
     {
+        animator.SetBool("IsDead", true);
         Debug.Log("Died");
+        GetComponent<Collider2D>().enabled = false;
+        this.enabled = false;
+
     }
 }
 

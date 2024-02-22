@@ -164,7 +164,7 @@ public class Playermovement : MonoBehaviour
     private MovementState state = MovementState.idle;
 
     [SerializeField] private int JumpForce = 7;
-    [SerializeField] private int moveSpeed = 15;
+    [SerializeField] private float moveSpeed = 15f;
     [SerializeField] private int ExtraJumps = 1;
     [SerializeField] private int MaxJumps = 1;
     [SerializeField] private LayerMask jumpableGround;
@@ -193,9 +193,11 @@ public class Playermovement : MonoBehaviour
         boxCol = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+
     }
 
     // Update is called once per frame
+
     void Update()
     {
 
