@@ -4,13 +4,27 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class Enemymovement : MonoBehaviour
 {
+    [SerializeField] GameObject player;
+    itemcollector itemcollector;
+
+
+    public int enemyCount = 1;
+
+    [SerializeField] private TextMeshProUGUI Enemytext;
+
     private float dirX;
     public Animator animator;
     private SpriteRenderer sprite;
     private Animator anim;
+    private bool levelCompleted;
+    private AudioSource finishSound;
+
+
 
     [SerializeField] private GameObject[] waypoints;
     private Transform waypointTransform;
@@ -23,10 +37,10 @@ public class Enemymovement : MonoBehaviour
     int HP = 100;
 /*    private int damage = 10;
 */
-
+/*
     private int enemycount = 5;
     private int points = 0;
-    [SerializeField] private TextMeshProUGUI Enemycount;
+    [SerializeField] private TextMeshProUGUI Enemycount;*/
 
 
 
@@ -34,9 +48,13 @@ public class Enemymovement : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+        finishSound = GetComponent<AudioSource>();
+
         sprite = GetComponent<SpriteRenderer>();
         sprite.flipX = true;
         HP = MaxHP;
+        itemcollector = player.GetComponent<itemcollector>();
+
 
     }
 
@@ -47,7 +65,6 @@ public class Enemymovement : MonoBehaviour
         if (Vector2.Distance(waypointTransform.position, transform.position) < .1f)
         {
 
-            Debug.Log(currentWaypointIndex);
             currentWaypointIndex++;
             sprite.flipX = false;
 
@@ -56,6 +73,21 @@ public class Enemymovement : MonoBehaviour
                 currentWaypointIndex = 0;
                 sprite.flipX = true;
                 
+
+            }
+            Debug.Log($"enemy count {enemyCount}, points {itemcollector.points} levelcomp {levelCompleted}");
+            if (enemyCount == 0 && itemcollector.points ==0 && levelCompleted != true)
+            {
+                anim.SetTrigger("finished");
+                finishSound.Play();
+                levelCompleted = true;
+                Invoke("CompleteLevel", 6f);
+                Debug.Log("finish");
+
+
+
+
+
 
             }
 
@@ -71,6 +103,10 @@ public class Enemymovement : MonoBehaviour
 
 
     }
+    void CompleteLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
     public void TakeDamage(int damage)
     {
         HP -= damage;
@@ -78,18 +114,24 @@ public class Enemymovement : MonoBehaviour
         if (HP <= 0)
         {
             Die();
+           
         }
     }
 
     void Die()
     {
+       
         animator.SetBool("IsDead", true);
         Debug.Log("Died");
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
+        enemyCount -= 1;
+        Enemytext.text = "Enemeis remaining: " + enemyCount;
+
 
     }
 }
+
 
 /*   void OnCollisionEnter2D(Collision2D collision) {
 

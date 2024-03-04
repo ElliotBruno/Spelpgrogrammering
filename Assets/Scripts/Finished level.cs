@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 
 public class Finishedlevel : MonoBehaviour
 
@@ -21,17 +23,17 @@ public class Finishedlevel : MonoBehaviour
 
     void Update()
     {
-        if (enemycount > 5 && levelCompleted != true)
+      /*  if (enemycount > 5 && levelCompleted != true)
         {
             anim.SetTrigger("finished");
             finishSound.Play();
             levelCompleted = true;
             Invoke("CompleteLevel", 6f);
 
-        }
+        }*/
     }
-    void CompleteLevel()
+   /* void CompleteLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
+    }*/
 }

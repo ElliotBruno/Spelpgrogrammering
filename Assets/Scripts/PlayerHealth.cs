@@ -140,8 +140,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Kolliderar med något");
-
+        
         if ((collision.gameObject.CompareTag("Spikes")) || (collision.gameObject.CompareTag("SpikeMan")) || (collision.gameObject.CompareTag("Bottom")) || collision.gameObject.CompareTag("Enemy"))
         {
             TakeDamage(10f);

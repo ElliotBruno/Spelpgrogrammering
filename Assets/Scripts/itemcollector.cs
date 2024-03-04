@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 
 public class itemcollector : MonoBehaviour
 {
-    private int points = 0;
+    public int points = 8;
 
     [SerializeField] private TextMeshProUGUI Kiwitext;
     private void OnTriggerEnter2D(Collider2D collision)
@@ -18,9 +18,9 @@ public class itemcollector : MonoBehaviour
 
         if (collision.CompareTag("Kiwi"))
         {
-            points += 1;
+            points -= 1;
             Destroy(collision.gameObject);
-            Kiwitext.text = "Frukter: " + points;
+            Kiwitext.text = "Fruits remaining: " + points;
         }
 
 
