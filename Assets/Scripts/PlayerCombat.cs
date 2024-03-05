@@ -11,7 +11,8 @@ public class Playercombat : MonoBehaviour
     public Transform attackpoint;
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
-    public int attackdamage = 40;
+    public int attackdamage = 70;
+    public int heavydamage = 100;
     public float attackRate = 2f;
     float nextAttackTime = 0f;
 
@@ -46,6 +47,12 @@ public class Playercombat : MonoBehaviour
     void heavyattack()
     {
         animator.SetTrigger("heavyattack");
+        Collider2D[] hitenemies = Physics2D.OverlapCircleAll(attackpoint.position, attackRange, enemyLayers);
+        foreach (Collider2D enemy in hitenemies)
+        {
+            enemy.GetComponent<Enemymovement>().TakeDamage(heavydamage);
+
+        }
     }
     private void OnDrawGizmosSelected()
     {

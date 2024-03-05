@@ -33,8 +33,8 @@ public class Enemymovement : MonoBehaviour
 
 
     private int currentWaypointIndex = 0;
-    public int MaxHP = 100;
-    int HP = 100;
+    public int MaxHP = 300;
+    int HP = 300;
 /*    private int damage = 10;
 */
 /*
