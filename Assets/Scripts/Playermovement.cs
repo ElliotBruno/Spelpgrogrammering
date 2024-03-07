@@ -155,6 +155,8 @@ public class Playermovement : MonoBehaviour
 
     private float dirX;
 
+    private float horizontal;
+
     private BoxCollider2D boxCol;
 
     private SpriteRenderer sprite;
@@ -168,8 +170,68 @@ public class Playermovement : MonoBehaviour
     [SerializeField] private int ExtraJumps = 1;
     [SerializeField] private int MaxJumps = 1;
     [SerializeField] private LayerMask jumpableGround;
+    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private Transform wallcheck;
+
+    private bool wallslide;
+    private float wallslidespeed = 2f;
+    private bool walljumping;
+    private float walljumpdirection;
+    private float walljumptime=0.2f;
+    private float walljumpcounter;
+    private float walljumpduration=0.4f;
+    private Vector2 walljumppower = new Vector2(8f, 16f);
 
 
+/*    private void walljump()
+    {
+        if (wallslide)
+        {
+            walljumping = true;
+            walljumpdirection = -transform.localScale.x;
+            walljumpcounter = walljumptime;
+        }
+        else
+        {
+            walljumpcounter -= Time.deltaTime;
+        }
+
+        if (Input.GetButtonDown("Jump") && walljumpcounter >0f)
+        {
+            walljumping = true;
+            rb.velocity=new Vector2(walljumpdirection * walljumppower.x, walljumppower.y)
+            walljumpcounter = 0f;
+            if (transform.localScale.x != walljumpdirection)
+            {
+                Vector3 localScale = transform.localScale;
+                localScale.x *= -1f;
+                transform.localScale=localScale;
+            }
+            Invoke(nameof(stopwalljump), walljumpduration);
+        }
+    }
+
+    private void stopwalljump()
+    {
+        walljumping = false;
+    }*/
+private bool Iswall()
+    {
+        return Physics2D.OverlapCircle(wallcheck.position,0.2f,wallLayer);
+    }
+
+    private void Wallslide()
+    {
+        if (Iswall() && !isGrounded() && horizontal != 0f)
+        {
+            wallslide = true;
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallslidespeed, float.MaxValue));
+        }
+        else
+        {
+            wallslide=false;
+        }
+    }
     private void Jump()
     {
         jumpSoundEffect.Play();
@@ -201,6 +263,7 @@ public class Playermovement : MonoBehaviour
 
     void Update()
     {
+        Wallslide();
 
         dirX = Input.GetAxisRaw("Horizontal");
         UpdateAnimationState();
