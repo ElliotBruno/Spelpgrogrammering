@@ -18,6 +18,9 @@ public class Enemymovement : MonoBehaviour
     [SerializeField] private TextMeshProUGUI Enemytext;
 
     private float dirX;
+    private BoxCollider2D boxCol;
+    [SerializeField] private LayerMask jumpableGround;
+
     public Animator animator;
     private SpriteRenderer sprite;
     private Animator anim;
@@ -29,6 +32,7 @@ public class Enemymovement : MonoBehaviour
     [SerializeField] private GameObject[] waypoints;
     private Transform waypointTransform;
     [SerializeField] private float speed = 2f;
+
 
 
 
@@ -76,7 +80,7 @@ public class Enemymovement : MonoBehaviour
 
             }
             Debug.Log($"enemy count {enemyCount}, points {itemcollector.points} levelcomp {levelCompleted}");
-            if (enemyCount == 0 && itemcollector.points ==0 && levelCompleted != true)
+           /* if (enemyCount == 0 && itemcollector.points ==0 && levelCompleted != true)
             {
                 anim.SetTrigger("finished");
                 finishSound.Play();
@@ -89,7 +93,7 @@ public class Enemymovement : MonoBehaviour
 
 
 
-            }
+            }*/
 
         }
 
@@ -120,6 +124,7 @@ public class Enemymovement : MonoBehaviour
 
     void Die()
     {
+        player.GetComponent<Finishedlevel>().enemyCount--;
        
         animator.SetBool("IsDead", true);
         Debug.Log("Died");
@@ -129,6 +134,10 @@ public class Enemymovement : MonoBehaviour
         Enemytext.text = "Enemeis remaining: " + enemyCount;
 
 
+    }
+    private bool isGrounded()
+    {
+        return Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0f, Vector2.down, 1f, jumpableGround);
     }
 }
 

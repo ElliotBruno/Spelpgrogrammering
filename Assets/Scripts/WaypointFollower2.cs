@@ -7,6 +7,10 @@ public class WaypointFollower2 : MonoBehaviour
     [SerializeField] private GameObject[] waypoints;
     [SerializeField] private float speed = 2f;
 
+    private enum MovementState { idle }
+
+    private MovementState state = MovementState.idle;
+
 
     private Transform waypointTransform;
     private int currentWaypointIndex = 0;
@@ -23,11 +27,11 @@ public class WaypointFollower2 : MonoBehaviour
     {
         waypointTransform = waypoints[currentWaypointIndex].transform;
 
-
+        
         if (Vector2.Distance(waypointTransform.position, transform.position) < .1f)
         {
             anim.SetBool("Hit", true);
-
+            state= MovementState.idle;
             currentWaypointIndex++;
 
             if (currentWaypointIndex >= waypoints.Length)
