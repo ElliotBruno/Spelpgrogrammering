@@ -14,7 +14,7 @@ public class Finishedlevel : MonoBehaviour
     public Animator anim;
     private AudioSource finishSound;
     private int enemycount = 1;
-    private bool levelCompleted;
+    private bool levelCompleted = false;
 
     [SerializeField] GameObject player;
     itemcollector itemcollector;
@@ -47,12 +47,16 @@ void Start()
 
     void Update()
     {
+
+        Debug.Log(enemyCount);
+        Debug.Log(levelCompleted);
+        Debug.Log(points);
         if (enemyCount == 0 && points == 0 && levelCompleted != true)
         {
             anim.SetTrigger("finished");
             finishSound.Play();
             levelCompleted = true;
-            Invoke("CompleteLevel", 6f);
+            Invoke("CompleteLevel", 1f);
             Debug.Log("finish");
 
         }
@@ -74,7 +78,19 @@ void Start()
 
 
     }
+    void Die()
+    {
+        player.GetComponent<Finishedlevel>().enemyCount--;
 
+        animator.SetBool("IsDead", true);
+        Debug.Log("Died");
+        GetComponent<Collider2D>().enabled = false;
+        this.enabled = false;
+        enemyCount -= 1;
+        Enemytext.text = "Enemeis remaining: " + enemyCount;
+
+
+    }
 
 
 }

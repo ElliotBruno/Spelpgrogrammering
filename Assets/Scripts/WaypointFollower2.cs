@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class WaypointFollower2 : MonoBehaviour
 {
@@ -16,10 +17,16 @@ public class WaypointFollower2 : MonoBehaviour
     private int currentWaypointIndex = 0;
 
     private Animator anim;
+    private SpriteRenderer sprite;
 
     private void Start()
     {
         anim = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
+
+        sprite.flipX = true;
+
+
     }
 
 
@@ -32,11 +39,16 @@ public class WaypointFollower2 : MonoBehaviour
         {
             anim.SetBool("Hit", true);
             state= MovementState.idle;
+            sprite.flipX = false;
             currentWaypointIndex++;
 
             if (currentWaypointIndex >= waypoints.Length)
             {
                 currentWaypointIndex = 0;
+                sprite.flipX = true;
+
+
+
             }
         }
 
