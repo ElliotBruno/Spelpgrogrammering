@@ -89,10 +89,16 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     public Image healthbar;
+    public Animator animator;
+
     private float healthAmount = 100f;
     public Slider healthSlider;
     private Animator anim;
     private Rigidbody2D rb;
+
+    private enum MovementState { idle, running, jumping, falling, double_jumping, wall_jummping, hurt }
+    private MovementState state = MovementState.idle;
+
     void Start()
     {
         healthSlider.maxValue = healthAmount;
@@ -100,6 +106,7 @@ public class PlayerHealth : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         healthSlider.value = healthAmount;
         UpdateHealthBar();
+
     }
 
     // Update is called once per frame
@@ -111,8 +118,11 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(float damage)
     {
         Debug.Log("tar skada :)");
+
         healthAmount -= damage;
+
         StartCoroutine(UpdateHealthBar());
+
 
         if (healthAmount <= 0)
         {
@@ -143,7 +153,11 @@ public class PlayerHealth : MonoBehaviour
         
         if ((collision.gameObject.CompareTag("Spikes")) || (collision.gameObject.CompareTag("SpikeMan")) || (collision.gameObject.CompareTag("Bottom")) || collision.gameObject.CompareTag("Enemy"))
         {
+            anim.SetTrigger("Hurt");
+
+
             TakeDamage(10f);
+
         }
     }
     private void Die()

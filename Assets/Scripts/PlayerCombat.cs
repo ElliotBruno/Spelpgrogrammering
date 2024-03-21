@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class Playercombat : MonoBehaviour
 {
@@ -9,15 +10,26 @@ public class Playercombat : MonoBehaviour
     private KeyCode meleeAttackKey = KeyCode.T;
     private KeyCode heavyAttackKey = KeyCode.R;
     public Transform attackpoint;
-    public float attackRange = 0.5f;
+    public float attackRange = 1f;
     public LayerMask enemyLayers;
     public int attackdamage = 70;
     public int heavydamage = 100;
     public float attackRate = 2f;
     float nextAttackTime = 0f;
+    private SpriteRenderer sprite;
+    private float dirX;
+
+
+    private MovementState state = MovementState.idle;
+    private enum MovementState { idle, running, jumping, falling, double_jumping, wall_jummping, hurt }
 
 
 
+    private void Start()
+    {
+        sprite = GetComponent<SpriteRenderer>();
+
+    }
     void Update()
     { 
         if(Time.time > nextAttackTime) {
@@ -31,9 +43,23 @@ public class Playercombat : MonoBehaviour
                 heavyattack();
                 nextAttackTime = Time.time + 1f/attackRate;
             }
+            if (dirX > 0f)
+            {
+                state = MovementState.running;
+                sprite.flipX = false;
+                FlipAttackPoint(false);
+
+            }
+            else if (dirX < 0)
+            {
+                state = MovementState.running;
+                sprite.flipX = true;
+                FlipAttackPoint(true);
+            }
         }
 
     }
+  
     void Attack()
     {
         animator.SetTrigger("Attack");
@@ -52,6 +78,20 @@ public class Playercombat : MonoBehaviour
         {
             enemy.GetComponent<Enemymovement>().TakeDamage(heavydamage);
 
+        }
+    }
+
+    private void FlipAttackPoint(bool flip)
+    {
+        if (flip)
+        {
+           
+            attackpoint.localScale = new Vector3(-4f, 1f, 1f); 
+        }
+        else
+        {
+            
+            attackpoint.localScale = new Vector3(1f, 1f, 1f); 
         }
     }
     private void OnDrawGizmosSelected()

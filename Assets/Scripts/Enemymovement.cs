@@ -39,16 +39,20 @@ public class Enemymovement : MonoBehaviour
     private int currentWaypointIndex = 0;
     public int MaxHP = 300;
     int HP = 300;
-/*    private int damage = 10;
-*/
-/*
-    private int enemycount = 5;
-    private int points = 0;
-    [SerializeField] private TextMeshProUGUI Enemycount;*/
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
 
 
+        if (collision.CompareTag("Player"))
+        {
+            animator.SetTrigger("Attack");
 
-    // Start is called before the first frame update
+        }
+
+
+    }
+
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -121,6 +125,7 @@ public class Enemymovement : MonoBehaviour
            
         }
     }
+  
 
     void Die()
     {
@@ -135,6 +140,7 @@ public class Enemymovement : MonoBehaviour
 
 
     }
+   
     private bool isGrounded()
     {
         return Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0f, Vector2.down, 1f, jumpableGround);
@@ -142,16 +148,7 @@ public class Enemymovement : MonoBehaviour
 }
 
 
-/*   void OnCollisionEnter2D(Collision2D collision) {
 
-      if ((collision.gameObject.CompareTag("Player"))
-      {
-          Debug.Log(collision.gameObject.name);
-          Damage(float damage);
-
-      }
-
-  }*/
 
 /*  void Damage(float damage)
      {
