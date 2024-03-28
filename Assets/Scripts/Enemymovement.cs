@@ -44,7 +44,7 @@ public class Enemymovement : MonoBehaviour
     {
 
 
-        if (collision.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             animator.SetTrigger("Attack");
 
@@ -80,7 +80,7 @@ public class Enemymovement : MonoBehaviour
             {
                 currentWaypointIndex = 0;
                 sprite.flipX = true;
-                
+
 
             }
             Debug.Log($"enemy count {enemyCount}, points {itemcollector.points} levelcomp {levelCompleted}");

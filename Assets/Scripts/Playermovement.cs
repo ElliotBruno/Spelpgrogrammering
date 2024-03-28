@@ -22,7 +22,15 @@ public class Playermovement : MonoBehaviour
 
     private SpriteRenderer sprite;
 
-    private enum MovementState { idle, running, jumping, falling, double_jumping, wall_jummping, hurt }
+    public float activespeed;
+    public float dashspeed;
+    public float dashlength = .5f, dashcooldown = 1f;
+    private float dashcounter;
+    private float dashcoolcounter;
+    private KeyCode rollKey = KeyCode.V;
+
+
+    private enum MovementState { idle, running, jumping, falling, double_jumping, wall_jummping, hurt, Roll }
 
     private MovementState state = MovementState.idle;
 
@@ -30,13 +38,16 @@ public class Playermovement : MonoBehaviour
     [SerializeField] private int moveSpeed = 10;
     [SerializeField] private int ExtraJumps = 1;
     [SerializeField] private int MaxJumps = 1;
-    [SerializeField] private LayerMask jumpableGround;
+    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private Transform wallcheck;
 
-    private bool wallslide;
+/*    private bool wallslide;
+*/    
     private float wallslidespeed = 2f;
     private bool walljumping;
+    private float wallJumpCooldown;
+
     private float walljumpdirection;
     private float walljumptime=0.2f;
     private float walljumpcounter;
@@ -45,12 +56,9 @@ public class Playermovement : MonoBehaviour
 
 
 
-private bool Iswall()
-    {
-        return Physics2D.OverlapCircle(wallcheck.position,0.2f,wallLayer);
-    }
 
-    private void Wallslide()
+
+/*    private void Wallslide()
     {
         if (Iswall() && !isGrounded() && horizontal != 0f)
         {
@@ -59,13 +67,29 @@ private bool Iswall()
         }
         else
         {
-            wallslide=false;
+            wallslide = false;
         }
-    }
+    }*/
     private void Jump()
     {
-        jumpSoundEffect.Play();
-        rb.velocity = new Vector2(rb.velocity.x, JumpForce);
+        if (isGrounded())
+        {
+            jumpSoundEffect.Play();
+            rb.velocity = new Vector2(rb.velocity.x, JumpForce);
+        }
+        else if( Wall() && !isGrounded())
+        {
+            if (horizontal==0)
+            {
+                rb.velocity = new Vector2(-Mathf.Sign(transform.localScale.x) * 10, 0);
+                transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+
+            }
+            else
+            wallJumpCooldown = 0;
+            rb.velocity = new Vector2(-Mathf.Sign(transform.localScale.x)* 3,6);
+        }
+     
         //rb.AddForce(new Vector2(0, 1f) * JumpForce * Time.deltaTime);
     }
 
@@ -86,6 +110,7 @@ private bool Iswall()
         boxCol = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        activespeed = moveSpeed;
 
     }
 
@@ -93,8 +118,42 @@ private bool Iswall()
 
     void Update()
     {
-        Wallslide();
+        horizontal = Input.GetAxis("Horizontal");
 
+        //Flip player when moving left-right
+        if (horizontal > 0.01f)
+            transform.localScale = Vector3.one;
+        else if (horizontal < -0.01f)
+            transform.localScale = new Vector3(-1, 1, 1);
+
+        if (Input.GetKeyDown(rollKey))
+        {
+            state = MovementState.Roll;
+
+            if (dashcoolcounter <=0 && dashcounter <=0)
+            {
+                activespeed = dashspeed;
+                dashcounter = dashlength;
+            }
+        }
+
+        anim.SetBool("run", horizontal != 0);
+        anim.SetBool("ground", isGrounded());
+        if (dashcounter>0)
+        {
+            dashcounter -= Time.deltaTime;
+            if (dashcounter<=0)
+            {
+                activespeed = moveSpeed;
+                dashcoolcounter = dashcooldown;
+            }
+            if (dashcoolcounter>0)
+            {
+                dashcoolcounter -= Time.deltaTime;
+            }
+        }
+        /*        Wallslide();
+        */
         dirX = Input.GetAxisRaw("Horizontal");
         UpdateAnimationState();
 
@@ -106,8 +165,11 @@ private bool Iswall()
         if (Input.GetButtonDown("Jump") && isGrounded())
         {
             Jump();
+            anim.SetBool("grounded", isGrounded());
+
 
         }
+
         else if (Input.GetButtonDown("Jump") && ExtraJumps > 0)
         {
             ExtraJumps--;
@@ -118,6 +180,23 @@ private bool Iswall()
         {
             ExtraJumps = MaxJumps;
         }
+        if (wallJumpCooldown < 0.2f)
+        {
+            
+                rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
+            
+            if (Wall() && !isGrounded())
+            {
+                rb.gravityScale = 0;
+                rb.velocity = Vector2.zero;
+            }
+            else
+                rb.gravityScale = 3;
+            if (Input.GetKey(KeyCode.Space))
+
+                Jump();
+        }
+        else wallJumpCooldown += Time.deltaTime;
 
     }
 
@@ -131,7 +210,8 @@ private bool Iswall()
         else if (dirX < 0)
         {
             state = MovementState.running;
-            sprite.flipX = true;
+            sprite.flipX = false;
+
         }
         else
         {
@@ -150,6 +230,14 @@ private bool Iswall()
         {
             state = MovementState.falling;
         }
+        if (Wall()==true)
+        {
+            state = MovementState.wall_jummping;
+
+        }
+      
+
+
 
 
         anim.SetInteger("State", (int)state);
@@ -157,11 +245,47 @@ private bool Iswall()
 
     }
 
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+
+        if ((collision.gameObject.CompareTag("Spikes")) || (collision.gameObject.CompareTag("SpikeMan")) || (collision.gameObject.CompareTag("Bottom")) || collision.gameObject.CompareTag("Enemy"))
+        {
+            state = MovementState.hurt;
+
+
+
+        }
+    }
+
     private bool isGrounded()
     {
-        return Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0f, Vector2.down, 1f, jumpableGround);
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
+        return raycastHit.collider != null;
     }
+    private bool Wall()
+    {
+
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
+        return raycastHit.collider != null;
+    }
+
 }
+
+
+
+    /*  private bool isGrounded()
+      {
+          return Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0f, Vector2.down, 1f, jumpableGround);
+      }*/
+    /* private bool IsGrounded()
+     {
+         return false;
+     }*/
+
+
+
+
 
 
 

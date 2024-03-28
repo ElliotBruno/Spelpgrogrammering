@@ -75624,6 +75624,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
+  player: {fileID: 0}
+  enemyCount: 1
+  Enemytext: {fileID: 0}
+  animator: {fileID: 0}
+  points: 8
+  Kiwitext: {fileID: 0}
 --- !u!61 &1034570203
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -75884,87 +75890,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce52cc6faf814534e87beae366e12185, type: 3}
---- !u!1001 &1266901170
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2524222970883467539, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2524222970883467539, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2624303840063136329, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_Name
-      value: Enemy - Copy
-      objectReference: {fileID: 0}
-    - target: {fileID: 5291076495945494554, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5291076495945494554, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6812717368306591149, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 19.363037
-      objectReference: {fileID: 0}
-    - target: {fileID: 6812717368306591149, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 6.9035583
-      objectReference: {fileID: 0}
-    - target: {fileID: 6812717368306591149, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6812717368306591149, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6812717368306591149, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6812717368306591149, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6812717368306591149, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6812717368306591149, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6812717368306591149, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6812717368306591149, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7174203579809621870, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -9
-      objectReference: {fileID: 0}
-    - target: {fileID: 7174203579809621870, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.7
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 46a4607f3745097439f113f1b56ef302, type: 3}
 --- !u!1 &1269485371
 GameObject:
   m_ObjectHideFlags: 0
@@ -76151,6 +76076,10 @@ MonoBehaviour:
   jumpableGround:
     serializedVersion: 2
     m_Bits: 64
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  wallcheck: {fileID: 0}
   jumpSoundEffect: {fileID: 1269485381}
 --- !u!114 &1269485378
 MonoBehaviour:
@@ -76426,6 +76355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthbar: {fileID: 1742739186}
+  animator: {fileID: 0}
   healthSlider: {fileID: 1742739187}
 --- !u!1001 &1305040109
 PrefabInstance:
@@ -77637,7 +77567,6 @@ SceneRoots:
   - {fileID: 608887298}
   - {fileID: 935997251}
   - {fileID: 112697460}
-  - {fileID: 1266901170}
   - {fileID: 1932461520}
   - {fileID: 631203878}
   - {fileID: 418544225}
