@@ -48,9 +48,9 @@ void Start()
     void Update()
     {
 
-        Debug.Log(enemyCount);
-        Debug.Log(levelCompleted);
-        Debug.Log(points);
+        //Debug.Log(enemyCount);
+        //Debug.Log(levelCompleted);
+        //Debug.Log(points);
         if (enemyCount == 0 && points == 0 && levelCompleted != true)
         {
             anim.SetTrigger("finished");

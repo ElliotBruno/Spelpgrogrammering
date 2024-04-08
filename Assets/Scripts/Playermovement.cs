@@ -114,6 +114,22 @@ public class Playermovement : MonoBehaviour
 
     }
 
+    private void Roll()
+    {
+
+
+        anim.SetTrigger("Roll");
+
+
+      /*  if (dashcoolcounter <= 0 && dashcounter <= 0)
+            {
+                activespeed = dashspeed;
+                dashcounter = dashlength;
+            }
+        */
+
+    }
+
     // Update is called once per frame
 
     void Update()
@@ -128,14 +144,13 @@ public class Playermovement : MonoBehaviour
 
         if (Input.GetKeyDown(rollKey))
         {
-            state = MovementState.Roll;
-
-            if (dashcoolcounter <=0 && dashcounter <=0)
-            {
-                activespeed = dashspeed;
-                dashcounter = dashlength;
-            }
+            //Debug.Log("hej");
+            Roll();
         }
+
+
+
+
 
         anim.SetBool("run", horizontal != 0);
         anim.SetBool("ground", isGrounded());

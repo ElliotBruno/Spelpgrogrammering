@@ -83,7 +83,7 @@ public class Enemymovement : MonoBehaviour
 
 
             }
-            Debug.Log($"enemy count {enemyCount}, points {itemcollector.points} levelcomp {levelCompleted}");
+            //Debug.Log($"enemy count {enemyCount}, points {itemcollector.points} levelcomp {levelCompleted}");
            /* if (enemyCount == 0 && itemcollector.points ==0 && levelCompleted != true)
             {
                 anim.SetTrigger("finished");

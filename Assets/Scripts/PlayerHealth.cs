@@ -154,6 +154,8 @@ public class PlayerHealth : MonoBehaviour
         if ((collision.gameObject.CompareTag("Spikes")) || (collision.gameObject.CompareTag("SpikeMan")) || (collision.gameObject.CompareTag("Bottom")) || collision.gameObject.CompareTag("Enemy"))
         {
             state = MovementState.hurt;
+            /*            animator.SetTrigger("Attack");
+            */
 
 
             TakeDamage(10f);
