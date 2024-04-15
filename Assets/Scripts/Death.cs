@@ -26,8 +26,8 @@ public class Death : MonoBehaviour
     {
         if ((collision.gameObject.CompareTag("Spikes")) || (collision.gameObject.CompareTag("SpikeMan")) || (collision.gameObject.CompareTag("Bottom")) || collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log(collision.gameObject.name);
-            Die();
+/*            Debug.Log(collision.gameObject.name);
+*/            Die();
 
         }
 

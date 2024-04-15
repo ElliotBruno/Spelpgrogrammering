@@ -51,8 +51,8 @@ public class Playermovement : MonoBehaviour
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private Transform wallcheck;
 
-    [SerializeField] private TrailRenderer tr;
-
+/*    [SerializeField] private TrailRenderer tr;
+*/
 /*    private bool wallslide;
 */    
     private float wallslidespeed = 2f;
@@ -270,8 +270,9 @@ public class Playermovement : MonoBehaviour
         }
         else if (dirX < 0)
         {
-            state = MovementState.running;
             sprite.flipX = false;
+
+            state = MovementState.running;
 
         }
         else

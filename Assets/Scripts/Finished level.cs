@@ -13,14 +13,13 @@ public class Finishedlevel : MonoBehaviour
 {
     public Animator anim;
     private AudioSource finishSound;
-    private int enemycount = 1;
     private bool levelCompleted = false;
 
     [SerializeField] GameObject player;
     itemcollector itemcollector;
 
 
-    public int enemyCount = 1;
+    public int enemyCount = 2;
 
     [SerializeField] private TextMeshProUGUI Enemytext;
 
@@ -85,7 +84,8 @@ void Start()
         animator.SetBool("IsDead", true);
         Debug.Log("Died");
         GetComponent<Collider2D>().enabled = false;
-        this.enabled = false;
+/*        this.enabled = false;
+*/        
         enemyCount -= 1;
         Enemytext.text = "Enemeis remaining: " + enemyCount;
 

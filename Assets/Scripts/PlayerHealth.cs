@@ -117,8 +117,8 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        Debug.Log("tar skada :)");
-
+/*        Debug.Log("tar skada :)");
+*/
         healthAmount -= damage;
 
         StartCoroutine(UpdateHealthBar());

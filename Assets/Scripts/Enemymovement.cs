@@ -13,7 +13,7 @@ public class Enemymovement : MonoBehaviour
     itemcollector itemcollector;
 
 
-    public int enemyCount = 1;
+    public int enemyCount = 2;
 
     [SerializeField] private TextMeshProUGUI Enemytext;
 
