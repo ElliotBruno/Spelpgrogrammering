@@ -19,14 +19,23 @@ public class Playermovement : MonoBehaviour
     private float horizontal;
 
     private BoxCollider2D boxCol;
+/*    public BoxCollider2D box_Head;
+ *    
+*/  
+    private CircleCollider2D box_Bottom;
+
 
     private SpriteRenderer sprite;
-
-    public float activespeed;
+    private bool canDash = true;
+    private bool isDashing;
+    private float activespeed;
     public float dashspeed;
     public float dashlength = .5f, dashcooldown = 1f;
     private float dashcounter;
     private float dashcoolcounter;
+    private float dashingcooldown=1f;
+    private float dashingPower = 24f;
+    private float dashTime = 0.2f;
     private KeyCode rollKey = KeyCode.V;
 
 
@@ -41,6 +50,8 @@ public class Playermovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private Transform wallcheck;
+
+    [SerializeField] private TrailRenderer tr;
 
 /*    private bool wallslide;
 */    
@@ -108,6 +119,9 @@ public class Playermovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         boxCol = GetComponent<BoxCollider2D>();
+        box_Bottom = GetComponent<CircleCollider2D>();
+
+
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         activespeed = moveSpeed;
@@ -117,16 +131,33 @@ public class Playermovement : MonoBehaviour
     private void Roll()
     {
 
+        boxCol.enabled = false;
+        box_Bottom.enabled = true;
 
         anim.SetTrigger("Roll");
 
-
-      /*  if (dashcoolcounter <= 0 && dashcounter <= 0)
-            {
-                activespeed = dashspeed;
-                dashcounter = dashlength;
-            }
+        /*        yield return new WaitForSeconds(dashcooldown);
         */
+        /*        boxCol.enabled = true;
+        */
+/*
+        canDash = false;
+        isDashing = true;
+        float orginalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
+        tr.emitting = false;
+        rb.gravityScale = orginalGravity;
+        isDashing = false;
+        yield return new WaitForSeconds(dashcooldown);
+        canDash = true;
+
+        if (dashcoolcounter <= 0 && dashcounter <= 0)
+        {
+            activespeed = dashspeed;
+            dashcounter = dashlength;
+        }*/
+
 
     }
 
@@ -154,6 +185,17 @@ public class Playermovement : MonoBehaviour
 
         anim.SetBool("run", horizontal != 0);
         anim.SetBool("ground", isGrounded());
+
+        if (Input.GetKeyDown(rollKey))
+        {
+/*            StartCoroutine(Roll());
+*/
+            if (dashcoolcounter<=0 && dashcounter<=0)
+            {
+                activespeed = dashspeed;
+                dashcounter = dashlength;
+            }
+        }
         if (dashcounter>0)
         {
             dashcounter -= Time.deltaTime;
@@ -166,6 +208,10 @@ public class Playermovement : MonoBehaviour
             {
                 dashcoolcounter -= Time.deltaTime;
             }
+        }
+        if (dashcoolcounter>0)
+        {
+            dashcoolcounter -= Time.deltaTime;
         }
         /*        Wallslide();
         */
