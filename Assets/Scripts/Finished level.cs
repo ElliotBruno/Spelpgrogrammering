@@ -19,7 +19,7 @@ public class Finishedlevel : MonoBehaviour
     itemcollector itemcollector;
 
 
-    public int enemyCount = 2;
+    public int enemyCount = 1;
 
     [SerializeField] private TextMeshProUGUI Enemytext;
 

@@ -64,23 +64,26 @@ public class Playermovement : MonoBehaviour
     private float walljumpcounter;
     private float walljumpduration=0.4f;
     private Vector2 walljumppower = new Vector2(8f, 16f);
+    public GameObject portal;
+    public GameObject rickMorty;
 
 
 
 
 
-/*    private void Wallslide()
-    {
-        if (Iswall() && !isGrounded() && horizontal != 0f)
+
+    /*    private void Wallslide()
         {
-            wallslide = true;
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallslidespeed, float.MaxValue));
-        }
-        else
-        {
-            wallslide = false;
-        }
-    }*/
+            if (Iswall() && !isGrounded() && horizontal != 0f)
+            {
+                wallslide = true;
+                rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallslidespeed, float.MaxValue));
+            }
+            else
+            {
+                wallslide = false;
+            }
+        }*/
     private void Jump()
     {
         if (isGrounded())
@@ -125,38 +128,81 @@ public class Playermovement : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         activespeed = moveSpeed;
+        Invoke("SpawnDelay",3);
 
+    }
+    private void SpawnDelay()
+    {
+        portal.SetActive(false);
+        rickMorty.SetActive(true);
     }
 
     private void Roll()
     {
 
-        boxCol.enabled = false;
-        box_Bottom.enabled = true;
 
-        anim.SetTrigger("Roll");
+
+        if (dirX > -1f)
+        {
+            anim.SetTrigger("Roll");
+
+            transform.position = transform.position + new Vector3(10, 0, 0);
+            sprite.flipX = false;
+        }
+       
+     /*   while (sprite.flipX=false)
+        {
+            transform.position = transform.position + new Vector3(10, 0, 0);
+
+        }
+        while (sprite.flipX = true)
+        {
+            transform.position = transform.position + new Vector3(10, 0, 0);
+
+        }*/
+        if (dirX > 0f)
+        {
+            anim.SetTrigger("Roll");
+
+            transform.position = transform.position + new Vector3(10, 0, 0);
+            sprite.flipX = false;
+
+
+        }
+        else if (dirX < 0)
+        {
+            sprite.flipX = true;
+            transform.position = transform.position + new Vector3(-10, 0, 0);
+
+
+        }
+        else
+        {
+
+
+        }
 
         /*        yield return new WaitForSeconds(dashcooldown);
         */
         /*        boxCol.enabled = true;
         */
-/*
-        canDash = false;
-        isDashing = true;
-        float orginalGravity = rb.gravityScale;
-        rb.gravityScale = 0f;
-        rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
-        tr.emitting = false;
-        rb.gravityScale = orginalGravity;
-        isDashing = false;
-        yield return new WaitForSeconds(dashcooldown);
-        canDash = true;
+        /*
+                canDash = false;
+                isDashing = true;
+                float orginalGravity = rb.gravityScale;
+                rb.gravityScale = 0f;
+                rb.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
+                tr.emitting = false;
+                rb.gravityScale = orginalGravity;
+                isDashing = false;
+                yield return new WaitForSeconds(dashcooldown);
+                canDash = true;
 
-        if (dashcoolcounter <= 0 && dashcounter <= 0)
-        {
-            activespeed = dashspeed;
-            dashcounter = dashlength;
-        }*/
+                if (dashcoolcounter <= 0 && dashcounter <= 0)
+                {
+                    activespeed = dashspeed;
+                    dashcounter = dashlength;
+                }*/
 
 
     }
@@ -168,11 +214,7 @@ public class Playermovement : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
 
         //Flip player when moving left-right
-        if (horizontal > 0.01f)
-            transform.localScale = Vector3.one;
-        else if (horizontal < -0.01f)
-            transform.localScale = new Vector3(-1, 1, 1);
-
+        
         if (Input.GetKeyDown(rollKey))
         {
             //Debug.Log("hej");
@@ -270,8 +312,7 @@ public class Playermovement : MonoBehaviour
         }
         else if (dirX < 0)
         {
-            sprite.flipX = false;
-
+            sprite.flipX = true;
             state = MovementState.running;
 
         }
