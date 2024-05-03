@@ -109,12 +109,16 @@ public class Playermovement : MonoBehaviour
 
     private void DoubleJump()
     {
+        jumpSoundEffect.Play();
+
         rb.velocity = new Vector2(rb.velocity.x, JumpForce);
+
         //rb.AddForce(new Vector2(0, 1f) * JumpForce * Time.deltaTime);
     }
 
     [Header("Audio")]
     [SerializeField] private AudioSource jumpSoundEffect;
+
 
 
     // Start is called before the first frame update
@@ -131,11 +135,12 @@ public class Playermovement : MonoBehaviour
         Invoke("SpawnDelay",3);
 
     }
-    private void SpawnDelay()
+/*    private IEnumerator void SpawnDelay()
     {
+        yield return
         portal.SetActive(false);
         rickMorty.SetActive(true);
-    }
+    }*/
 
     private void Roll()
     {

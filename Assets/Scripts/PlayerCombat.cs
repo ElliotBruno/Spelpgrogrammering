@@ -21,7 +21,8 @@ public class Playercombat : MonoBehaviour
 
 
     private MovementState state = MovementState.idle;
-    private enum MovementState { idle, running, jumping, falling, double_jumping, wall_jummping, hurt }
+
+    private enum MovementState { idle, running, jumping, falling, double_jumping, wall_jummping, hurt, Roll }
 
 
 
@@ -36,11 +37,15 @@ public class Playercombat : MonoBehaviour
             if (Input.GetKeyDown(meleeAttackKey))
             {
                 Attack();
+                SlashSoundEffect.Play();
+
                 nextAttackTime = Time.time + 1f/attackRate;
             }
             if (Input.GetKeyDown(heavyAttackKey))
             {
                 heavyattack();
+                AttackSoundEffect.Play();
+
                 nextAttackTime = Time.time + 1f/attackRate;
             }
             if (dirX > 0f)
@@ -59,10 +64,33 @@ public class Playercombat : MonoBehaviour
         }
 
     }
-  
+    [Header("Audio")]
+    [SerializeField] private AudioSource AttackSoundEffect;
+    [SerializeField] private AudioSource SlashSoundEffect;
+    private void UpdateAnimationState()
+    {
+        if (dirX > 0f)
+        {
+            state = MovementState.running;
+            sprite.flipX = false;
+        }
+        else if (dirX < 0)
+        {
+            sprite.flipX = true;
+            state = MovementState.running;
+
+        }
+        else
+        {
+            state = MovementState.idle;
+        }
+
+    }
+
     void Attack()
     {
         animator.SetTrigger("Attack");
+
         Collider2D[] hitenemies=Physics2D.OverlapCircleAll(attackpoint.position, attackRange, enemyLayers);
         foreach (Collider2D enemy in hitenemies)
         {
@@ -73,6 +101,7 @@ public class Playercombat : MonoBehaviour
     void heavyattack()
     {
         animator.SetTrigger("heavyattack");
+
         Collider2D[] hitenemies = Physics2D.OverlapCircleAll(attackpoint.position, attackRange, enemyLayers);
         foreach (Collider2D enemy in hitenemies)
         {
