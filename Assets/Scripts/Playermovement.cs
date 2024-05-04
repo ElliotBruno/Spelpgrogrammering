@@ -72,18 +72,7 @@ public class Playermovement : MonoBehaviour
 
 
 
-    /*    private void Wallslide()
-        {
-            if (Iswall() && !isGrounded() && horizontal != 0f)
-            {
-                wallslide = true;
-                rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallslidespeed, float.MaxValue));
-            }
-            else
-            {
-                wallslide = false;
-            }
-        }*/
+
     private void Jump()
     {
         if (isGrounded())
@@ -104,7 +93,6 @@ public class Playermovement : MonoBehaviour
             rb.velocity = new Vector2(-Mathf.Sign(transform.localScale.x)* 3,6);
         }
      
-        //rb.AddForce(new Vector2(0, 1f) * JumpForce * Time.deltaTime);
     }
 
     private void DoubleJump()
@@ -113,7 +101,6 @@ public class Playermovement : MonoBehaviour
 
         rb.velocity = new Vector2(rb.velocity.x, JumpForce);
 
-        //rb.AddForce(new Vector2(0, 1f) * JumpForce * Time.deltaTime);
     }
 
     [Header("Audio")]
@@ -135,12 +122,6 @@ public class Playermovement : MonoBehaviour
         Invoke("SpawnDelay",3);
 
     }
-/*    private IEnumerator void SpawnDelay()
-    {
-        yield return
-        portal.SetActive(false);
-        rickMorty.SetActive(true);
-    }*/
 
     private void Roll()
     {
