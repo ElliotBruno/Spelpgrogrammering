@@ -136,16 +136,7 @@ public class Playermovement : MonoBehaviour
             sprite.flipX = false;
         }
        
-     /*   while (sprite.flipX=false)
-        {
-            transform.position = transform.position + new Vector3(10, 0, 0);
-
-        }
-        while (sprite.flipX = true)
-        {
-            transform.position = transform.position + new Vector3(10, 0, 0);
-
-        }*/
+   
         if (dirX > 0f)
         {
             anim.SetTrigger("Roll");

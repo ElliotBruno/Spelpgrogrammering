@@ -7,15 +7,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class Enemymovement : MonoBehaviour
+public class Skeleton : MonoBehaviour
 {
     [SerializeField] GameObject player;
     itemcollector itemcollector;
 
 
-    public int enemyCount = 2;
+    public int EnemyCount = 1;
 
-    [SerializeField] private TextMeshProUGUI Enemytext;
+    [SerializeField] private TextMeshProUGUI enemytext;
 
     private float dirX;
     private BoxCollider2D boxCol;
@@ -23,9 +23,9 @@ public class Enemymovement : MonoBehaviour
 
     public Animator animator;
     private SpriteRenderer sprite;
-    private Animator anim;
-    private bool levelCompleted;
-    private AudioSource finishSound;
+    private Animator Anim;
+    private bool LevelCompleted;
+    private AudioSource FinishSound;
 
 
 
@@ -55,8 +55,8 @@ public class Enemymovement : MonoBehaviour
 
     void Start()
     {
-        anim = GetComponent<Animator>();
-        finishSound = GetComponent<AudioSource>();
+        Anim = GetComponent<Animator>();
+        FinishSound = GetComponent<AudioSource>();
 
         sprite = GetComponent<SpriteRenderer>();
         sprite.flipX = true;
@@ -84,28 +84,28 @@ public class Enemymovement : MonoBehaviour
 
             }
             //Debug.Log($"enemy count {enemyCount}, points {itemcollector.points} levelcomp {levelCompleted}");
-           /* if (enemyCount == 0 && itemcollector.points ==0 && levelCompleted != true)
-            {
-                anim.SetTrigger("finished");
-                finishSound.Play();
-                levelCompleted = true;
-                Invoke("CompleteLevel", 6f);
-                Debug.Log("finish");
+            /* if (enemyCount == 0 && itemcollector.points ==0 && levelCompleted != true)
+             {
+                 anim.SetTrigger("finished");
+                 finishSound.Play();
+                 levelCompleted = true;
+                 Invoke("CompleteLevel", 6f);
+                 Debug.Log("finish");
 
 
 
 
 
 
-            }*/
+             }*/
 
         }
 
 
-     
 
 
-   
+
+
 
         transform.position = Vector2.MoveTowards(transform.position, waypointTransform.position, Time.deltaTime * speed);
 
@@ -122,25 +122,25 @@ public class Enemymovement : MonoBehaviour
         if (HP <= 0)
         {
             Die();
-           
+
         }
     }
-  
+
 
     void Die()
     {
         player.GetComponent<Finishedlevel>().enemyCount--;
-       
+
         animator.SetBool("IsDead", true);
         Debug.Log("Died");
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
-        enemyCount -= 1;
-        Enemytext.text = "Enemies remaining: " + enemyCount;
+        EnemyCount -= 1;
+        enemytext.text = "Enemies remaining: " + EnemyCount;
 
 
     }
-   
+
     private bool isGrounded()
     {
         return Physics2D.BoxCast(boxCol.bounds.center, boxCol.bounds.size, 0f, Vector2.down, 1f, jumpableGround);
